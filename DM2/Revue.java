@@ -3,8 +3,9 @@ public class Revue extends Document {
 	private int annee;
 
 	//Constructor
-	public Revue(int id, String title, String author, int nbPages, int mois, int annee) {
-		super(id, title, author, nbPages);
+	public Revue(int id, String title, int mois, int annee) {
+		super(id, title);
+
 		this.mois = mois;
 		this.annee = annee;
 	}
