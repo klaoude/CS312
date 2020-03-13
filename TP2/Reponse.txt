@@ -1,0 +1,3 @@
+Exercice 1:
+1) Oui car une salle de TP est une Salle
+2)
