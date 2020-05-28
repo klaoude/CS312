@@ -2,6 +2,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
 import java.io.Serializable;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class FSMIO<T1, T2> implements Serializable{
 	private List<State> states;
