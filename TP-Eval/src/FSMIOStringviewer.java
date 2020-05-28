@@ -77,6 +77,9 @@ public class FSMIOStringviewer
 
     protected void OpenFile()
     {
+        if(m_currentFile != null)
+            CloseFile();
+
         JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
         int returnVal = fileChooser.showOpenDialog(m_frame);
 
@@ -140,5 +143,6 @@ public class FSMIOStringviewer
         m_filenameLabel.setText("No file loaded.");
         m_statusLabel.setText("1.0");
         m_frame.pack();
+        m_currentFile = null;
     }
 }

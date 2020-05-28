@@ -32,9 +32,7 @@ public class FSMIO<T1, T2> implements Serializable{
 	{
 		ObjectInputStream ois = null;
 		try{
-			final FileInputStream fichier = new FileInputStream(filePath);
-			ois = new ObjectInputStream(fichier);
-			FSMIO fsmio = (FSMIO)ois.readObject();
+			FSMIO fsmio = (FSMIO)new ObjectInputStream(new FileInputStream(filePath)).readObject();
 			this.states = fsmio.states;
 			this.tf = fsmio.tf;
 			this.currentState = fsmio.currentState;
@@ -54,8 +52,7 @@ public class FSMIO<T1, T2> implements Serializable{
 		ObjectOutputStream oos = null;
 		try
 		{
-			FileOutputStream fichier = new FileOutputStream(filePath);
-			oos = new ObjectOutputStream(fichier);
+			oos = new ObjectOutputStream(new FileOutputStream(filePath));
 			oos.writeObject(this);
 			oos.flush();
 		}
@@ -88,7 +85,7 @@ public class FSMIO<T1, T2> implements Serializable{
 		for (Transition<T1, T2> transition : tf.getTransition()) 
 		{
             String inputName = transition.getTag().getInput().toString();
-            if (!inputs.contains(inputName))
+            if (inputs != null && !inputs.contains(inputName))
 				inputs.add(inputName);
         }
 
@@ -96,12 +93,12 @@ public class FSMIO<T1, T2> implements Serializable{
     }
 
 	public boolean addState(State s){		
-		boolean done = false;
-		if(!this.states.contains(s)){
-			this.states.add(s);
-			done = true;
+		if(!states.contains(s))
+		{
+			states.add(s);
+			return true;
 		}
-		return done;
+		return false;
 	}
 
 	public void reset(){

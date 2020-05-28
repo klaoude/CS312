@@ -46,12 +46,16 @@ public class FSMIOViewer extends FSMIOStringviewer
 
     private void SaveFile()
     {
-        m_fsmioString.getFSM().saveObject(m_currentFile.getAbsolutePath());
+        m_fsmioString.getFSM().saveObject(m_currentFile.getAbsolutePath() + ".ser");
+        JOptionPane.showMessageDialog(m_frame, m_currentFile.getAbsolutePath() + " saved !", "File Saved", JOptionPane.INFORMATION_MESSAGE);
     }
 
     @Override
     protected void OpenFile()
     {
+        if(m_currentFile != null)
+            CloseFile();
+        
         JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
         int returnVal = fileChooser.showOpenDialog(m_frame);
 
@@ -90,8 +94,31 @@ public class FSMIOViewer extends FSMIOStringviewer
             m_filenameLabel.setText("File: " + fileName);
             m_textArea.setText("States: " + m_fsmioString.getFSM().getStates() + m_fsmioString.toString());
         }
+        else if(ext.equals(".fsm"))
+        {
+            m_currentFile = selectedFile;
+            m_fsmioString = new FSMIOString(m_currentFile.getAbsolutePath());
+            
+            final JMenu transitionMenu = new JMenu("Transition");
+            m_menuBar.add(transitionMenu);
+
+            JMenuItem item = new JMenuItem("reset");
+            item.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent e) { Reset(); } });
+            transitionMenu.add(item);
+            for(String i : m_fsmioString.getFSM().getPossiblesInputs())
+            {
+                item = new JMenuItem(i);
+                item.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent e) { DoTransition(i); } });
+                transitionMenu.add(item);
+            }            
+
+            JOptionPane.showMessageDialog(m_frame, fileName, "File loaded", JOptionPane.INFORMATION_MESSAGE);
+            m_statusLabel.setText("FSMIO loaded. Current State: " + m_fsmioString.getFSM().getState());
+            m_filenameLabel.setText("File: " + fileName);
+            m_textArea.setText("States: " + m_fsmioString.getFSM().getStates() + m_fsmioString.toString());
+        }
         else
-            JOptionPane.showMessageDialog(m_frame, fileName + " is not a .ser file", "File Load Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(m_frame, fileName + " is not a .ser or .fsm file", "File Load Error", JOptionPane.ERROR_MESSAGE);
         
         m_frame.pack();
     }
