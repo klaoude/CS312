@@ -123,19 +123,22 @@ public class FSMIOStringviewer
     protected void Reset()
     {
         m_fsmioString.getFSM().reset();
-        m_statusLabel.setText("Reset. New Satate: " + m_fsmioString.getFSM().getState().getName());
+        m_statusLabel.setText("Reset. New State: " + m_fsmioString.getFSM().getState().getName());
     }
 
     protected void DoTransition(String in)
-    {
+    {   
         m_statusLabel.setText("New State: " + m_fsmioString.getFSM().getState() + " output: " + m_fsmioString.getFSM().doTransition(in)); 
     }
 
     protected void CloseFile()
     {
         m_fsmioString = null;
-        m_statusLabel.setText("No FSMIO. Open a fsm file to load a FSMIO.\nThe content of the file will appear here.");
-        
+        if( m_menuBar.getMenuCount() > 1 )
+            m_menuBar.remove(1);
+        m_textArea.setText("No FSMIO. Open a fsm file to load a FSMIO.\nThe content of the file will appear here.");
+        m_filenameLabel.setText("No file loaded.");
+        m_statusLabel.setText("1.0");
         m_frame.pack();
     }
 }
