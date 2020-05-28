@@ -15,6 +15,7 @@ public class FSMIOViewer extends FSMIOStringviewer
     @Override
     protected void CreateMenu() 
     {
+        m_frame.setTitle("FSMIOViewer");
         m_menuBar = new JMenuBar();
         m_frame.setJMenuBar(m_menuBar);
 
@@ -46,8 +47,11 @@ public class FSMIOViewer extends FSMIOStringviewer
 
     private void SaveFile()
     {
-        m_fsmioString.getFSM().saveObject(m_currentFile.getAbsolutePath() + ".ser");
-        JOptionPane.showMessageDialog(m_frame, m_currentFile.getAbsolutePath() + " saved !", "File Saved", JOptionPane.INFORMATION_MESSAGE);
+        if( m_currentFile != null )
+        {
+            m_fsmioString.getFSM().saveObject(m_currentFile.getAbsolutePath() + ".ser");
+            JOptionPane.showMessageDialog(m_frame, m_currentFile.getAbsolutePath() + " saved !", "File Saved", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     @Override
