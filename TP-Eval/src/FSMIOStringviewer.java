@@ -116,7 +116,6 @@ public class FSMIOStringviewer
         }
         else
             JOptionPane.showMessageDialog(m_frame, fileName + " is not a .fsm file", "File Load Error", JOptionPane.ERROR_MESSAGE);
-
         
         m_frame.pack();
     }
@@ -129,7 +128,7 @@ public class FSMIOStringviewer
 
     private void DoTransition(String in)
     {
-        m_statusLabel.setText("New State: " + m_fsmioString.getFSM().getState() + " output: " + m_fsmioString.getFSM().doTransition(in));
+        m_statusLabel.setText("New State: " + m_fsmioString.getFSM().getState() + " output: " + m_fsmioString.getFSM().doTransition(in)); 
     }
 
     private void CloseFile()

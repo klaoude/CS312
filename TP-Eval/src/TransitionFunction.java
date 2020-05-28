@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
+import java.io.Serializable;
 
 public class TransitionFunction <T1, T2> implements Serializable{
 	private List<Transition<T1, T2>> transitions;

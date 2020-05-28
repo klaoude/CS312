@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
+import java.io.Serializable;
 
 public class FSMIO<T1, T2> implements Serializable{
 	private List<State> states;
