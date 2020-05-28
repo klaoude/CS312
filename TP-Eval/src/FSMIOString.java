@@ -6,7 +6,17 @@ import java.io.IOException;
 // A FSMIO with Strings in the Tag reading the automaton description from a file
 public class FSMIOString {
 
-	FSMIO<String, String> fsms;
+	private FSMIO<String, String> fsms;
+
+	public FSMIOString()
+	{
+		;
+	}
+
+	public void LoadFromSerialized(String filePath)
+	{
+		fsms = new FSMIO(filePath);
+	}
 
 	// Constructor : Reading a FSMIO description from a file
 	// The file contains one transition per line

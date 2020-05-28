@@ -1,54 +1,18 @@
+import java.io.File;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.io.*;
 import javax.swing.*;
 
-public class FSMIOStringviewer
+public class FSMIOViewer extends FSMIOStringviewer
 {
-    protected JFrame m_frame;
-    protected JLabel m_filenameLabel;
-    protected JLabel m_statusLabel;
-    protected JMenuBar m_menuBar;
-    protected JTextArea m_textArea;
-    protected File m_currentFile = null;
-    protected FSMIOString m_fsmioString;
-
-    public FSMIOStringviewer()
+    public FSMIOViewer()
     {
-        CreateFrame();
+        super();
     }
 
-    private void CreateFrame()
-    {
-        m_frame = new JFrame("FSMIOStringviewer");
-        m_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        m_frame.setPreferredSize(new Dimension(800, 600));
-
-        CreateMenu();
-
-        final Container contentPane = m_frame.getContentPane();
-
-        // Specify the layout manager with nice spacing
-        contentPane.setLayout(new BorderLayout(6, 6));
-
-        m_filenameLabel = new JLabel("No file displayed.");
-        contentPane.add(m_filenameLabel, BorderLayout.NORTH);
-
-        m_textArea = new JTextArea("No FSMIO. Open a fsm file to load a FSMIO.\nThe content of the file will appear here.");
-        m_textArea.setEditable(false);
-        contentPane.add(m_textArea, BorderLayout.CENTER);
-
-        m_statusLabel = new JLabel("1.0");
-        contentPane.add(m_statusLabel, BorderLayout.SOUTH);
-
-        m_frame.pack();
-
-        final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        m_frame.setLocation(d.width / 2 - m_frame.getWidth() / 2, d.height / 2 - m_frame.getHeight() / 2);
-        m_frame.setVisible(true);
-    }
-
+    @Override
     protected void CreateMenu() 
     {
         m_menuBar = new JMenuBar();
@@ -60,6 +24,11 @@ public class FSMIOStringviewer
         JMenuItem item = new JMenuItem("Open");
         item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         item.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent e) { OpenFile(); } });
+        menu.add(item);
+
+        item = new JMenuItem("Save");
+        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        item.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent e) { SaveFile(); } });
         menu.add(item);
 
         item = new JMenuItem("Close");
@@ -75,6 +44,12 @@ public class FSMIOStringviewer
         menu.add(item);
     }
 
+    private void SaveFile()
+    {
+        m_fsmioString.getFSM().saveObject(m_currentFile.getAbsolutePath());
+    }
+
+    @Override
     protected void OpenFile()
     {
         JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
@@ -91,10 +66,11 @@ public class FSMIOStringviewer
         if(fileName.contains("."))
             ext = fileName.substring(fileName.lastIndexOf("."));
 
-        if(ext.equals(".fsm"))
+        if(ext.equals(".ser"))
         {
             m_currentFile = selectedFile;
-            m_fsmioString = new FSMIOString(m_currentFile.getAbsolutePath());
+            m_fsmioString = new FSMIOString();
+            m_fsmioString.LoadFromSerialized(selectedFile.getAbsolutePath());
             
             final JMenu transitionMenu = new JMenu("Transition");
             m_menuBar.add(transitionMenu);
@@ -115,26 +91,7 @@ public class FSMIOStringviewer
             m_textArea.setText("States: " + m_fsmioString.getFSM().getStates() + m_fsmioString.toString());
         }
         else
-            JOptionPane.showMessageDialog(m_frame, fileName + " is not a .fsm file", "File Load Error", JOptionPane.ERROR_MESSAGE);
-        
-        m_frame.pack();
-    }
-
-    protected void Reset()
-    {
-        m_fsmioString.getFSM().reset();
-        m_statusLabel.setText("Reset. New Satate: " + m_fsmioString.getFSM().getState().getName());
-    }
-
-    protected void DoTransition(String in)
-    {
-        m_statusLabel.setText("New State: " + m_fsmioString.getFSM().getState() + " output: " + m_fsmioString.getFSM().doTransition(in)); 
-    }
-
-    protected void CloseFile()
-    {
-        m_fsmioString = null;
-        m_statusLabel.setText("No FSMIO. Open a fsm file to load a FSMIO.\nThe content of the file will appear here.");
+            JOptionPane.showMessageDialog(m_frame, fileName + " is not a .ser file", "File Load Error", JOptionPane.ERROR_MESSAGE);
         
         m_frame.pack();
     }
