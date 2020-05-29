@@ -168,7 +168,6 @@ public class Test {
             m_currentFile = selectedFile;
             m_fsmioString = new FSMIOString(m_currentFile.getAbsolutePath());
            
-
             JOptionPane.showMessageDialog(m_frame, fileName, "File loaded", JOptionPane.INFORMATION_MESSAGE);
             m_statusLabel.setText("FSMIO loaded. Current State: " + m_fsmioString.getFSM().getState());
             m_filenameLabel.setText("File: " + fileName);
