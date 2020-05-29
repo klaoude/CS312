@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public class FSMIO<T1, T2> implements Serializable{
+public class FSMIO<T1, T2> implements Serializable {
 	private List<State> states;
 	private TransitionFunction<T1, T2> tf ;
 	private State currentState;	
@@ -64,19 +64,17 @@ public class FSMIO<T1, T2> implements Serializable{
 		}
 	}
 
-	public void addTransition(State orig, T1 input, T2 output, State dest){
+	public boolean addTransition(State orig, T1 input, T2 output, State dest){
 		if(states.contains(orig) && states.contains(dest))
 		{
 			try
 			{
 				tf.addTransition(orig, input, output, dest);
+				return true;
 			}
-			catch(Exception e)
-			{
-				System.out.println("Etat non ajoutes !");
-				System.exit(0);	
-			}			
+			catch(Exception e) { System.out.println("Etat non ajoutes !"); }					
 		}
+		return false;
 	}
 
 	public List<String> getPossiblesInputs() {

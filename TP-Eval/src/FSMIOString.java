@@ -10,7 +10,7 @@ public class FSMIOString {
 
 	public FSMIOString()
 	{
-		;
+		fsms = new FSMIO<String, String>((State)new State("init"));
 	}
 
 	public void LoadFromSerialized(String filePath)

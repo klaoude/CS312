@@ -13,7 +13,6 @@ public class Test {
     protected JTextArea m_textArea;
     protected File m_currentFile = null;
     protected FSMIOString m_fsmioString;
-    private FSMIO fsmio;
 
     public Test()
     {
@@ -102,25 +101,38 @@ public class Test {
 
     private void new_FSMIO()
     {
-        fsmio = new FSMIO<String, String>((State)new State("cazou"));
-        m_textArea.setText("");
-        return;
+        m_fsmioString = new FSMIOString();
+        m_textArea.setText("States: " + m_fsmioString.getFSM().getStates() + m_fsmioString.toString());
     }
 
     private void add_state()
     {
         JOptionPane jop = new JOptionPane();
         String nom = jop.showInputDialog(null, "Ajoutez un état!", "ADD_STATE", JOptionPane.QUESTION_MESSAGE);
-        fsmio.addState(new State(nom));
-        m_textArea.append("State : "+ nom);
-        return;
+        m_fsmioString.getFSM().addState(new State(nom));
+        m_textArea.setText("States: " + m_fsmioString.getFSM().getStates() + m_fsmioString.toString());
     }
 
     private void add_transi()
     {
         JOptionPane jop = new JOptionPane();
-        String nom = jop.showInputDialog(null, "Ajoutez un état!", "ADD_STATE", JOptionPane.QUESTION_MESSAGE);
-        return;
+        String nom = jop.showInputDialog(null, "Ajoutez une transition ! [origin input output dest]", "ADD_TRANSITION", JOptionPane.QUESTION_MESSAGE);
+        State s1 = null, s2 = null;
+        String[] args = nom.split(" ");
+        for(State s : m_fsmioString.getFSM().getStates())
+        {
+            if(s.getName().equals(args[0]))
+                s1 = s;
+            else if(s.getName().equals(args[3]))
+                s2 = s;
+        }
+        if(s1 == null || s2 == null)
+            System.out.printf("Pas de state %s/%s", args[0], args[3]);
+        else
+        {
+            m_fsmioString.getFSM().addTransition(s1, args[1], args[2], s2);
+            m_textArea.setText("States: " + m_fsmioString.getFSM().getStates() + m_fsmioString.toString());
+        }
     }
 
     private void SaveFile()
