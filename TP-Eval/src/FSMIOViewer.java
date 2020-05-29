@@ -45,10 +45,18 @@ public class FSMIOViewer extends FSMIOStringviewer
         menu.add(item);
     }
 
-    private void SaveFile()
+    protected void SaveFile()
     {
         if( m_currentFile != null )
         {
+            m_fsmioString.getFSM().saveObject(m_currentFile.getAbsolutePath() + ".ser");
+            JOptionPane.showMessageDialog(m_frame, m_currentFile.getAbsolutePath() + " saved !", "File Saved", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else
+        {
+            JOptionPane jop = new JOptionPane();
+            String nom = jop.showInputDialog(null, "File name: ", "FILE_NAME", JOptionPane.QUESTION_MESSAGE);
+            m_currentFile = new File(nom);
             m_fsmioString.getFSM().saveObject(m_currentFile.getAbsolutePath() + ".ser");
             JOptionPane.showMessageDialog(m_frame, m_currentFile.getAbsolutePath() + " saved !", "File Saved", JOptionPane.INFORMATION_MESSAGE);
         }
